@@ -8,11 +8,11 @@ RUN echo 'deb [arch=amd64,i386] http://repo.steampowered.com/steam precise steam
 
 # let's head off a few of the things steam will want to install immediately
 RUN apt-get update && \
-	apt-get install -yq \
-		libgl1-mesa-dri:i386 \
-		libgl1-mesa-glx:i386 \
-		libc6:i386 \
-    pulseaudio
+  apt-get install -yq \
+    libgl1-mesa-dri:i386 \
+    libgl1-mesa-glx:i386 \
+    libc6:i386 \
+    pulseaudio:i386
 
 RUN echo 1 options snd-hda-intel probe_mask=0xa,-1 >> /etc/modprobe.d/snd-hda-intel.conf
 
@@ -22,8 +22,12 @@ RUN echo 'steam ALL = NOPASSWD: ALL' > /etc/sudoers.d/steam && chmod 0440 /etc/s
 
 RUN adduser --disabled-password --gecos 'Steam' steam && \
 	adduser steam video
+
 USER steam
+
 ENV HOME /home/steam
+ENV DISPLAY $DISPLAY
+
 VOLUME /home/steam
 
 CMD ["steam"]
