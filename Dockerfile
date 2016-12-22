@@ -1,4 +1,4 @@
-FROM 0x4445565a/docker-steamos
+FROM tianon/steamos
 
 RUN apt-get update && apt-get install -y steam-launcher zenity && rm -rf /var/lib/apt/lists/*
 
