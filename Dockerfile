@@ -1,4 +1,4 @@
-FROM tianon/steamos
+FROM ubuntu:16.04
 
 RUN apt-get update && apt-get install -y steam-launcher zenity && rm -rf /var/lib/apt/lists/*
 
@@ -11,7 +11,11 @@ RUN apt-get update && \
   apt-get install -yq \
     libgl1-mesa-dri:i386 \
     libgl1-mesa-glx:i386 \
-    libc6:i386 \
+    libc6:i386
+
+# Keeping these by themeselves to help with caching
+RUN apt-get update && \
+  apt-get install -yq \
     pciutils:i386 \
     pulseaudio:i386
 
