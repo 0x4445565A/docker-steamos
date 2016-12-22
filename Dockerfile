@@ -1,28 +1,37 @@
 FROM ubuntu:16.04
 
-RUN add-apt-repository multiverse && apt-get update && apt-get install -y steam zenity && rm -rf /var/lib/apt/lists/*
+ENV TERM $TERM
 
-# add the sources.list stuff that steam will at first start
-RUN echo 'deb [arch=amd64,i386] http://repo.steampowered.com/steam precise steam' > /etc/apt/sources.list.d/steam.list && \
-  dpkg --add-architecture i386
-
-# let's head off a few of the things steam will want to install immediately
 RUN apt-get update && \
-  apt-get install -yq \
-    libgl1-mesa-dri:i386 \
-    libgl1-mesa-glx:i386 \
-    libc6:i386
+  apt-get install -y zenity \
+  alsa-utils \
+  python \
+  curl \
+  python-apt \
+  pulseaudio \
+  pciutils \
+  xterm \
+  xz-utils \
+  sudo
 
-# Keeping these by themeselves to help with caching
-RUN apt-get update && \
-  apt-get install -yq \
-    pciutils:i386 \
-    pulseaudio:i386
+RUN apt-get install -y alsa-base
+
+RUN dpkg --add-architecture i386 && apt-get update && \
+    apt-get install -yq \
+      wget \
+      libgl1-mesa-dri:i386 \
+      libgl1-mesa-glx:i386 \
+      libc6:i386 \
+      libstdc++6:i386 \
+      libtxc-dxtn-s2tc0:i386
+
+RUN rm -rf /var/lib/apt/lists/*
 
 RUN echo 1 options snd-hda-intel probe_mask=0xa,-1 >> /etc/modprobe.d/snd-hda-intel.conf
 
-# steam itself needs to be able to install things, and it uses "sudo" for that
-RUN apt-get install -yq sudo
+RUN wget http://media.steampowered.com/client/installer/steam.deb
+RUN dpkg -i --force-all steam.deb && rm -f steam.deb
+
 RUN echo 'steam ALL = NOPASSWD: ALL' > /etc/sudoers.d/steam && chmod 0440 /etc/sudoers.d/steam
 
 RUN adduser --disabled-password --gecos 'Steam' steam && \
@@ -30,9 +39,8 @@ RUN adduser --disabled-password --gecos 'Steam' steam && \
 
 USER steam
 
-ENV HOME /home/steam
 ENV DISPLAY $DISPLAY
-
+ENV HOME /home/steam
 VOLUME /home/steam
 
-CMD ["steam"]
+CMD ["steam", "--reset"]
