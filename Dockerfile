@@ -12,6 +12,7 @@ RUN apt-get update && \
     libgl1-mesa-dri:i386 \
     libgl1-mesa-glx:i386 \
     libc6:i386 \
+    pciutils:i386 \
     pulseaudio:i386
 
 RUN echo 1 options snd-hda-intel probe_mask=0xa,-1 >> /etc/modprobe.d/snd-hda-intel.conf
