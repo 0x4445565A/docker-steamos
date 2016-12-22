@@ -43,4 +43,4 @@ ENV DISPLAY $DISPLAY
 ENV HOME /home/steam
 VOLUME /home/steam
 
-CMD ["steam", "--reset"]
+CMD ["steam"]
