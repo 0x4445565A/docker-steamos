@@ -1,4 +1,4 @@
-FROM 0x4445565a/steamos
+FROM 0x4445565a/docker-steamos
 
 RUN apt-get update && apt-get install -y steam-launcher zenity && rm -rf /var/lib/apt/lists/*
 
@@ -14,7 +14,7 @@ RUN apt-get update && \
 		libc6:i386 \
     pulseaudio
 
-RUN echo 1 options snd-hda-intel probe_mask=0xa,-1 >> /etc/modprobe.d/snd-hda-intel.conf    
+RUN echo 1 options snd-hda-intel probe_mask=0xa,-1 >> /etc/modprobe.d/snd-hda-intel.conf
 
 # steam itself needs to be able to install things, and it uses "sudo" for that
 RUN apt-get install -yq sudo
