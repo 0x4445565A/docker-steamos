@@ -27,7 +27,7 @@ RUN dpkg --add-architecture i386 && apt-get update && \
 
 RUN rm -rf /var/lib/apt/lists/*
 
-RUN echo 1 options snd-hda-intel probe_mask=0xa,-1 >> /etc/modprobe.d/snd-hda-intel.conf
+RUN echo options snd_hda_intel index=1 >> /etc/modprobe.d/default.conf
 
 RUN wget http://media.steampowered.com/client/installer/steam.deb
 RUN dpkg -i --force-all steam.deb && rm -f steam.deb
@@ -43,4 +43,5 @@ ENV DISPLAY $DISPLAY
 ENV HOME /home/steam
 VOLUME /home/steam
 
-CMD ["steam"]
+# Commented out for ease of development
+#CMD ["steam"]
